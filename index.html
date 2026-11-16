@@ -769,6 +769,39 @@ footer{background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 60%,tr
 body.rting{cursor:crosshair}
 .rt-h{outline:2px dashed #7fbcff!important;outline-offset:2px}
 .rt-sel{outline:2px solid #ffcc00!important;outline-offset:3px}
+/* =================== V2 : fond 100 % liquid glass, en-tête réglable, barre du bas =================== */
+.hero-bg,.hero-media,.hero .hdots{display:none!important}
+.hero{background:linear-gradient(160deg,#06101f 0%,#0a2c52 50%,#0b3a6b 100%)}
+.orbs::before,.orbs::after{content:"";position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none}
+.orbs::before{width:min(70vw,640px);aspect-ratio:1;right:-12%;top:6%;background:radial-gradient(circle,rgba(56,150,255,.7),transparent 68%)}
+.orbs::after{width:min(60vw,540px);aspect-ratio:1;left:-14%;bottom:-20%;background:radial-gradient(circle,rgba(227,15,45,.42),transparent 68%)}
+.orbs .o1{width:min(46vw,540px);right:2%;top:10%}
+.orbs .o2{width:min(22vw,240px);right:40%;bottom:6%}
+.orbs .o3{width:min(14vw,150px);right:0;bottom:14%}
+.orbs .o4{width:min(18vw,200px);left:4%;top:56%;animation-delay:-4.5s;background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.7),rgba(160,200,255,.2) 45%,rgba(60,120,255,.18))}
+@media(max-width:900px){
+  .hero{padding-bottom:13rem!important}
+  .orbs .o1{width:360px;right:-100px;top:auto;bottom:-120px}
+  .orbs .o2{width:180px;right:44%;bottom:-50px}
+  .orbs .o3{width:105px;right:6%;bottom:170px}
+  .orbs .o4{width:120px;left:auto;right:-34px;top:17%}
+}
+/* en-tête : trois emplacements (gauche / centre / droite) */
+.nav .wrap{display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:.5rem}
+.ns{display:flex;align-items:center;gap:.6rem;min-width:0}
+.ns.nl{justify-self:start}.ns.nc{justify-self:center;max-width:100%}.ns.nr{justify-self:end}
+.brandname{font-weight:var(--w-nom,700)!important}
+.menu-list a,.menu-list button{font-weight:var(--w-menu,700)}
+@media(max-width:520px){.nav .hide-sm{display:none}}
+/* barre du bas : Guide gratuit à gauche, icône chat à droite (toujours visibles) */
+.fab{position:fixed!important;width:auto}
+.fab.gf{left:calc(14px + env(safe-area-inset-left,0px));right:auto}
+.fab.wa{right:calc(14px + env(safe-area-inset-right,0px));left:auto}
+.fab.wa .ico-chat{display:inline!important;font-size:1.55rem;line-height:1}
+.fab.wa{padding:.55rem .8rem}
+#rtbtn{display:none!important}
+#rttool select{width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;padding:.5rem .7rem;font:600 .85rem var(--font-body)}
+#rttool select option{color:#0e1b2e}
 </style>
 
 <template id="tpl">
@@ -776,8 +809,9 @@ body.rting{cursor:crosshair}
 <div class="topbar" id="topbar" hidden><div class="wrap"><span class="tag">Annonce</span><span class="msg" id="topmsg"></span></div></div>
 
 <header class="nav"><div class="wrap">
-  <a class="brand" href="#accueil" aria-label="Accueil"><img id="navlogo" alt="Logo"></a>
-  <div class="navr">
+  <div class="ns nl" id="slotL"><a class="brand" href="#accueil" aria-label="Accueil"><img id="navlogo" alt="Logo"></a></div>
+  <div class="ns nc" id="slotC"></div>
+  <div class="ns nr" id="slotR">
     <button class="btn btn-primary btn-sm hide-sm" data-open="free" type="button">Guide gratuit</button>
     <a class="brandname" href="#accueil" id="brandname"></a>
     <button class="burger" id="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
@@ -792,7 +826,7 @@ body.rting{cursor:crosshair}
 
 <main id="accueil">
 <div class="hero"><div class="hero-bg" id="herobg" aria-hidden="true"></div>
-<div class="orbs" aria-hidden="true"><i class="o o1"></i><i class="o o2"></i><i class="o o3"></i></div>
+<div class="orbs" aria-hidden="true"><i class="o o1"></i><i class="o o2"></i><i class="o o3"></i><i class="o o4"></i></div>
 <div class="wrap">
   <div>
     <span class="eyebrow" id="heroeyebrow"></span>
@@ -868,8 +902,7 @@ body.rting{cursor:crosshair}
 
 <button class="fab gf" type="button" data-open="free" aria-label="Guide gratuit">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2Z"/><path d="M4 21V5M9 8h6"/></svg><span>Guide gratuit</span></button>
-<a class="fab wa" id="fab" target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/><path d="M8.5 11h7M8.5 14h4"/></svg><span>WhatsApp</span></a>
+<a class="fab wa" id="fab" target="_blank" rel="noopener" aria-label="Discuter sur WhatsApp"><span class="ico-chat" aria-hidden="true">💬</span></a>
 
 <!-- guide gratuit : fenêtre de discussion -->
 <div class="modal" id="freeModal" hidden><div class="sheet" role="dialog" aria-modal="true" aria-label="Guide gratuit">
@@ -960,6 +993,11 @@ const DEFAULTS = {
     fond: [],
     bouton2: { texte: "Ce que nous sommes", url: "#services" },
     bouton3: { texte: "Nos réalisations", url: "#realisations" }
+  },
+  entete: {
+    logo: "", logo_pos: "Gauche", nom_pos: "Droite", menu_pos: "Droite", nom_gras: true, menu_gras: true,
+    menu_labels: { titre: "Menu", services: "Services", pour_qui: "Accompagnement", realisations: "Réalisations", formations: "Formations",
+                   free: "Guide gratuit", pay: "Comment payer", avis: "Témoignages", contact: "Contact" }
   },
   anim: { maitre: true, diaporama: true, duree: 6.5, effet: "Zoom lent", zoom: 20, voile: 100, flou: 0, parallaxe: true,
           entree: true, apparition: "Flou + montée", vitesse: 100, chips_flottants: true, logo_flotte: true, spot: true,
@@ -1115,7 +1153,7 @@ try { savedBase = JSON.parse(document.getElementById("state").textContent || "{}
 let S = deepMerge(clone(DEFAULTS), clone(savedBase));
 const touched = new Set();
 let dirty = false;
-const role = { mode: null, admin: false };
+const role = { mode: null, admin: false, ui: false };
 const edit = { on: false, sec: "infos" };
 const ui = { fcat: "Tout", rcat: "Tout", cur: store.get("bs_cur") || "FC", tm: 0 };
 let liveRates = null;
@@ -1162,11 +1200,23 @@ const currencies = () => ["FC", ...Object.keys(S.monnaies.taux)];
 /* ---------------------------------- rendu du site ---------------------------------- */
 function renderChrome() {
   document.title = S.nom;
-  ["navlogo", "footlogo"].forEach(id => { $("#" + id).src = LOGO; });
+  const E = S.entete || {};
+  ["navlogo", "footlogo"].forEach(id => { $("#" + id).src = E.logo || LOGO; });
+  document.documentElement.style.setProperty("--w-nom", E.nom_gras === false ? 500 : 700);
+  document.documentElement.style.setProperty("--w-menu", E.menu_gras === false ? 500 : 700);
+  placeNav();
   $("#brandname").textContent = S.nom; $("#footname").textContent = S.nom;
   $("#fab").href = waLink("Bonjour " + S.nom + ", j'ai une question.");
   $("#soc").innerHTML = S.reseaux.map(r => `<a href="${esc(r.url)}" target="_blank" rel="noopener" aria-label="${esc(r.nom)}" title="${esc(r.nom)}">${socIcon(r.nom)}</a>`).join("");
   $("#copy").textContent = `© ${new Date().getFullYear()} ${S.nom}. Tous droits réservés.`;
+}
+function placeNav() {
+  const E = S.entete || {}, slots = { Gauche: $("#slotL"), Centre: $("#slotC"), Droite: $("#slotR") };
+  const put = (el, pos) => { if (!el) return; if (pos === "Masqué") { el.hidden = true; return; } el.hidden = false; (slots[pos] || slots.Droite).appendChild(el); };
+  put($(".nav .brand"), E.logo_pos || "Gauche");
+  put($('.nav [data-open="free"]'), E.menu_pos || "Droite");
+  put($("#brandname"), E.nom_pos || "Droite");
+  put($("#burger"), E.menu_pos === "Masqué" ? "Droite" : (E.menu_pos || "Droite"));
 }
 function renderHero() {
   const A = S.accueil;
@@ -1279,15 +1329,17 @@ function renderMenu() {
     $("#menutitle").textContent = "Modification";
     L.push(`<div class="sep">Que veux-tu modifier ?</div>`);
     SECTIONS.forEach(s => L.push(`<button type="button" data-sec="${s.id}"><span class="dot b"></span>${esc(s.label)}</button>`));
+    L.push(`<div class="sep">Sur le site</div><button type="button" data-act="start-rt"><span class="dot b"></span>Retoucher directement sur le site</button>`);
     L.push(`<div class="sep">Aide</div><button type="button" data-open="guide"><span class="dot"></span>Guide des outils</button>`);
     L.push(`<button type="button" data-act="exit-edit"><span class="dot"></span>Quitter la modification</button>`);
   } else {
-    $("#menutitle").textContent = "Menu";
-    L.push(a("#services", "Services"), a("#pour-qui", "Accompagnement", "b"), a("#realisations", "Réalisations"), a("#formations", "Formations", "b"));
-    L.push(`<button type="button" data-open="free"><span class="dot"></span>Guide gratuit</button>`);
-    L.push(`<button type="button" data-open="pay"><span class="dot b"></span>Comment payer</button>`);
-    L.push(a("#avis", "Témoignages"), a("#contact", "Contact", "b"));
-    if (role.admin) {
+    const ML = Object.assign({}, DEFAULTS.entete.menu_labels, (S.entete && S.entete.menu_labels) || {});
+    $("#menutitle").textContent = ML.titre;
+    L.push(a("#services", esc(ML.services)), a("#pour-qui", esc(ML.pour_qui), "b"), a("#realisations", esc(ML.realisations)), a("#formations", esc(ML.formations), "b"));
+    L.push(`<button type="button" data-open="free"><span class="dot"></span>${esc(ML.free)}</button>`);
+    L.push(`<button type="button" data-open="pay"><span class="dot b"></span>${esc(ML.pay)}</button>`);
+    L.push(a("#avis", esc(ML.avis)), a("#contact", esc(ML.contact), "b"));
+    if (role.admin && role.ui) {
       L.push(`<div class="sep">Espace administrateur</div><button type="button" data-act="start-edit"><span class="dot"></span>Modifier le site</button><button type="button" data-open="guide"><span class="dot b"></span>Guide des outils</button>`);
       if (role.mode === "supabase") L.push(`<button type="button" data-act="logout"><span class="dot"></span>Se déconnecter</button>`);
     }
@@ -1468,9 +1520,15 @@ const SECTIONS = [
     { title: "Coordonnées", path: "", fields: [T("nom", "Nom du site", "text"), T("whatsapp", "WhatsApp (chiffres seulement, ex. 243992131618)", "text"), T("email", "E-mail", "text"), T("telephone", "Téléphone affiché", "text"), T("ville", "Ville", "text")] },
     { title: "Réseaux sociaux (Facebook, Instagram, TikTok, LinkedIn, X, YouTube)", path: "reseaux", list: true, fields: [T("nom", "Réseau", "text"), T("url", "Lien", "url")], nw: { nom: "Facebook", url: "https://" } }
   ] },
+  { id: "entete", label: "En-tête et menu", blocks: [
+    { title: "Nom du site (en haut)", path: "", fields: [T("nom", "Nom du site", "text")] },
+    { title: "Logo", path: "entete", fields: [T("logo", "Logo (laisser vide = logo d'origine)", "img"), T("logo_pos", "Emplacement du logo", "sel", { opts: () => ["Gauche", "Centre", "Droite", "Masqué"] })] },
+    { title: "Nom du site : emplacement et gras", path: "entete", fields: [T("nom_pos", "Emplacement du nom", "sel", { opts: () => ["Gauche", "Centre", "Droite", "Masqué"] }), T("nom_gras", "Nom en gras", "chk")] },
+    { title: "Trois traits (menu) : emplacement et gras", path: "entete", fields: [T("menu_pos", "Emplacement des trois traits", "sel", { opts: () => ["Gauche", "Centre", "Droite"] }), T("menu_gras", "Textes du menu en gras", "chk")] },
+    { title: "Noms des liens dans le menu", path: "entete.menu_labels", fields: [T("titre", "Titre du menu", "text"), T("services", "Lien 1", "text"), T("pour_qui", "Lien 2", "text"), T("realisations", "Lien 3", "text"), T("formations", "Lien 4", "text"), T("free", "Lien 5", "text"), T("pay", "Lien 6", "text"), T("avis", "Lien 7", "text"), T("contact", "Lien 8", "text")] }
+  ] },
   { id: "accueil", label: "Accueil", blocks: [
-    { title: "Haut de page", path: "accueil", fields: [T("sur_titre", "Petit titre", "text"), T("titre", "Titre (début de phrase)", "text"), T("mots", "Mots qui défilent (un par ligne)", "lines"), T("texte", "Petit texte sous le titre", "area"), T("bouton1.texte", "Bouton 1 : texte", "text"), T("bouton1.url", "Bouton 1 : lien (https://... ou wa:message)", "text"), T("bouton2.texte", "Bouton 2 : texte", "text"), T("bouton2.url", "Bouton 2 : lien (#services, https://...)", "text"), T("bouton3.texte", "Bouton 3 : texte", "text"), T("bouton3.url", "Bouton 3 : lien (#realisations, https://...)", "text") ] },
-    { title: "Images du haut de page (avec dégradé bleu, facultatif)", path: "accueil.fond", list: true, gallery: true, fields: [T("titre", "Nom (pour vous repérer)", "text"), T("image", "Image", "img")], nw: { titre: "Nouvelle image", image: "" } }
+    { title: "Haut de page", path: "accueil", fields: [T("sur_titre", "Petit titre", "text"), T("titre", "Titre (début de phrase)", "text"), T("mots", "Mots qui défilent (un par ligne)", "lines"), T("texte", "Petit texte sous le titre", "area"), T("bouton1.texte", "Bouton 1 : texte", "text"), T("bouton1.url", "Bouton 1 : lien (https://... ou wa:message)", "text"), T("bouton2.texte", "Bouton 2 : texte", "text"), T("bouton2.url", "Bouton 2 : lien (#services, https://...)", "text"), T("bouton3.texte", "Bouton 3 : texte", "text"), T("bouton3.url", "Bouton 3 : lien (#realisations, https://...)", "text") ] }
   ] },
   { id: "services", label: "Services", blocks: [
     { title: "Titre de la section", path: "services", fields: [T("titre", "Titre", "text"), T("texte", "Texte", "area")] },
@@ -1530,14 +1588,6 @@ const SECTIONS = [
   ] },
   { id: "anim", label: "Animations", blocks: [
     { title: "Interrupteur général", path: "anim", fields: [T("maitre", "Animations activées sur tout le site (décochez pour tout arrêter)", "chk")] },
-    { title: "Images qui défilent en haut", path: "anim", fields: [
-      T("diaporama", "Faire défiler les images automatiquement", "chk"),
-      T("duree", "Secondes par image (2 à 30)", "num"),
-      T("effet", "Effet de passage", "sel", { opts: () => ["Zoom lent", "Fondu", "Glissement", "Aucun"] }),
-      T("zoom", "Force du zoom (0 à 60 %)", "num"),
-      T("voile", "Voile sombre sur les images (100 = actuel, 0 = images pures)", "num"),
-      T("flou", "Flou de l'image (0 à 30 px)", "num"),
-      T("parallaxe", "L'image bouge quand on descend la page", "chk")] },
     { title: "Apparition des éléments quand on descend", path: "anim", fields: [
       T("entree", "Textes du haut qui apparaissent au chargement", "chk"),
       T("apparition", "Style d'apparition", "sel", { opts: () => ["Flou + montée", "Montée", "Zoom", "Glissement", "Fondu", "Aucune"] }),
@@ -1589,7 +1639,7 @@ function blockHTML(b) {
 function renderPanel() {
   const sec = SECTIONS.find(s => s.id === edit.sec) || SECTIONS[0];
   $("#adtabs").innerHTML = SECTIONS.map(s => `<button type="button" data-sec="${s.id}" aria-pressed="${s.id === sec.id}">${esc(s.label)}</button>`).join("");
-  $("#adbody").innerHTML = `<div class="row"><button class="mini-btn add" type="button" data-act="pick">👆 Cliquer sur le site pour modifier un élément</button></div>` + sec.blocks.map(blockHTML).join("");
+  $("#adbody").innerHTML = `<div class="row"><button class="mini-btn add" type="button" data-act="pick">👆 Cliquer sur le site pour modifier un élément</button><button class="mini-btn add" type="button" data-act="start-rt">✏️ Retoucher directement sur le site</button></div>` + sec.blocks.map(blockHTML).join("");
 }
 let tRender = null;
 function touch(path) {
@@ -1765,8 +1815,9 @@ document.addEventListener("click", async e => {
 async function adminAct(el) {
   const a = el.dataset.act, p = el.dataset.p, i = +el.dataset.i;
   if (a === "start-edit") { openEditor(); return; }
-  if (a === "exit-edit") { edit.on = false; hide("admin"); renderMenu(); hide("menu"); setDirty(dirty); return; }
-  if (a === "logout") { sb.token = null; try { sessionStorage.removeItem("bs_tok"); } catch (e) {} role.admin = false; role.mode = null; edit.on = false; hide("menu"); renderMenu(); return; }
+  if (a === "start-rt") { hide("admin"); hide("menu"); rtStart(); return; }
+  if (a === "exit-edit") { edit.on = false; role.ui = false; hide("admin"); renderMenu(); hide("menu"); setDirty(dirty); return; }
+  if (a === "logout") { role.ui = false; sb.token = null; try { sessionStorage.removeItem("bs_tok"); } catch (e) {} role.admin = false; role.mode = null; edit.on = false; hide("menu"); renderMenu(); return; }
   if (a === "upload") {
     const inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/*";
     inp.onchange = async () => {
@@ -1839,7 +1890,7 @@ $("#form").addEventListener("submit", e => {
 });
 $("#loginForm").addEventListener("submit", async e => {
   e.preventDefault(); const err = $("#lg-err"); err.hidden = true;
-  try { await sb.login($("#lg-mail").value, $("#lg-pass").value); role.admin = true; role.mode = "supabase"; hide("login"); renderMenu(); openEditor(); }
+  try { await sb.login($("#lg-mail").value, $("#lg-pass").value); role.admin = true; role.mode = "supabase"; role.ui = true; hide("login"); renderMenu(); openEditor(); }
   catch (er) { err.textContent = er.message || "Connexion impossible"; err.hidden = false; }
 });
 
@@ -2007,6 +2058,7 @@ setInterval(() => {
 const HERO_MS = 6500;
 let heroI = 0, heroT = null, heroCaps = [];
 function buildHeroSlides(A) {
+  { const b = $("#herobg"); if (b) b.textContent = ""; const d = $("#hdots"); if (d) d.innerHTML = ""; return; }
   const bg = $("#herobg"), sl = (A.fond || []).filter(f => f && f.image), key = sl.map(f => f.image).join("|");
   if (bg.dataset.k === key) return;
   bg.dataset.k = key; bg.textContent = ""; heroCaps = sl.map(f => f.titre || "");
@@ -2078,13 +2130,16 @@ async function boot() {
     if (sb.token) { role.admin = true; role.mode = "supabase"; renderMenu(); }
   } else detectRole();
   loadRates();
+  /* accès caché à l'espace administrateur : 5 touches rapides sur la ligne © du bas de page, ou adresse se terminant par #modification */
+  let tp = 0, tt = 0;
+  $("#copy").addEventListener("click", () => { const n = Date.now(); tp = n - tt < 1500 ? tp + 1 : 1; tt = n; if (tp >= 5) { tp = 0; if (location.hash === "#modification") route(); else location.hash = "#modification"; } });
   route(); addEventListener("hashchange", route);
 }
 const ADMIN_MAIL = "bstrategiewebacademie@gmail.com";
 function route() {
   if (location.hash !== "#modification" && location.hash !== "#modifier") return;
   hideAll();
-  if (role.admin && role.mode === "supabase") { openEditor(); return; }
+  if (role.admin) { role.ui = true; openEditor(); return; }
   if (!CONFIG.supabaseUrl) return;
   $("#lg-mail").value = ADMIN_MAIL; show("login");
 }
@@ -2094,10 +2149,11 @@ const rtNorm = x => String(x).replace(/\s+/g, " ").trim();
 const rtHash = str => { let h = 5381; for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0; return "h" + (h >>> 0).toString(36) + str.length; };
 const rtSkip = el => !el || !!el.closest("script,style,template,#admin,#rtbar,#rttool,#rtbtn,#pickbar,textarea,select,option,input");
 const RT_BG = /background-image:\s*url\(\s*["']?(.*?)["']?\s*\)/;
-function rtClear(el) { ["color", "-webkit-text-fill-color", "font-size", "background-image"].forEach(p => el.style.removeProperty(p)); el.removeAttribute("data-rts"); }
+function rtClear(el) { ["color", "-webkit-text-fill-color", "font-size", "font-weight", "background-image"].forEach(p => el.style.removeProperty(p)); el.removeAttribute("data-rts"); }
 function rtStyle(el, r) {
   el.dataset.rts = "1";
-  el.style.removeProperty("font-size");
+  el.style.removeProperty("font-size"); el.style.removeProperty("font-weight");
+  if (r.gras === true) el.style.setProperty("font-weight", "700", "important"); else if (r.gras === false) el.style.setProperty("font-weight", "400", "important");
   if (r.taille && Number(r.taille) !== 100) { const base = parseFloat(getComputedStyle(el).fontSize) || 16; el.style.setProperty("font-size", (base * r.taille / 100).toFixed(2) + "px", "important"); }
   if (r.couleur) {
     el.style.setProperty("color", r.couleur, "important"); el.style.setProperty("-webkit-text-fill-color", r.couleur, "important");
@@ -2155,7 +2211,7 @@ function rtSync() {
       if (a.dataset.rt === "pub") { a.disabled = true; $(".rts", bar).textContent = "Publication…"; try { await publish(); } catch (er) {} $(".rts", bar).textContent = ($("#adstatus") || {}).textContent || "Publié"; a.disabled = false; }
     });
   }
-  btn.hidden = !role.admin || rt.on;
+  btn.hidden = true;
   if (!role.admin && rt.on) rtStop();
 }
 function rtStart() {
@@ -2163,7 +2219,7 @@ function rtStart() {
   $("#rtbar .rts").textContent = dirty ? "Modifications non publiées" : "Touchez un élément";
 }
 function rtStop() {
-  rt.on = false; document.body.classList.remove("rting"); $("#rtbar").hidden = true; $("#rttool").hidden = true; $("#rtbtn").hidden = !role.admin;
+  rt.on = false; document.body.classList.remove("rting"); $("#rtbar").hidden = true; $("#rttool").hidden = true; $("#rtbtn").hidden = true;
   $$(".rt-h,.rt-sel").forEach(e => e.classList.remove("rt-h", "rt-sel"));
 }
 document.addEventListener("mouseover", e => { if (!rt.on) return; $$(".rt-h").forEach(x => x.classList.remove("rt-h")); if (!e.target.closest("#rtbar,#rttool")) e.target.classList.add("rt-h"); });
@@ -2197,6 +2253,7 @@ function rtTool() {
     h += `<label>Texte<textarea id="rt_t" rows="2">${esc(rtNorm(rt.node.nodeValue))}</textarea></label>
     <div class="rtrow"><label>Couleur<span class="cwrap"><input type="color" id="rt_c" value="${col}">${sw}</span></label></div>
     <label>Taille : <b id="rt_sv">${cur.taille || 100}%</b><input type="range" id="rt_s" min="40" max="320" step="5" value="${cur.taille || 100}"></label>
+    <label>Gras<select id="rt_b"><option value="">Comme avant</option><option value="g"${cur.gras === true ? " selected" : ""}>En gras</option><option value="n"${cur.gras === false ? " selected" : ""}>Pas en gras</option></select></label>
     <div class="rtrow"><button type="button" data-a="resetc">Couleur d'origine</button><button type="button" data-a="resett">Tout remettre</button></div>`;
   } else {
     h += `<div class="rtrow"><label class="rtfile">Changer l'image<input type="file" id="rt_f" accept="image/*"></label><button type="button" data-a="url">Coller un lien</button><button type="button" data-a="resetimg">Image d'origine</button></div><p class="rtnote" id="rt_msg"></p>`;
@@ -2212,11 +2269,12 @@ document.addEventListener("input", e => {
     rtDirty("libelles"); applyLibelles(); applyRetouches();
   }
   if (t.id === "rt_c") rtSet({ couleur: t.value });
+  if (t.id === "rt_b") rtSet({ gras: t.value === "g" ? true : t.value === "n" ? false : null });
   if (t.id === "rt_s") { $("#rt_sv").textContent = t.value + "%"; rtSet({ taille: Number(t.value) }); }
 });
 function rtSet(o) {
   const cur = (S.retouches || []).find(x => x && x.cle === rt.key) || {}, nx = Object.assign({}, cur, o);
-  rtUpsert("retouches", rt.key, o, !nx.couleur && (!nx.taille || nx.taille === 100)); applyRetouches();
+  rtUpsert("retouches", rt.key, o, !nx.couleur && nx.gras == null && (!nx.taille || nx.taille === 100)); applyRetouches();
 }
 async function rtImage(url) {
   const im = rt.img; if (!im) return; const isBg = im.tagName !== "IMG";
